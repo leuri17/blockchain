@@ -1,4 +1,4 @@
-package controllers;
+package com.solera.blockchain.controllers;
 
 
 import com.solera.blockchain.models.Question;
@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ public class HomeController {
     public HomeController(){}
 
     @PostMapping("/login")
+    @CrossOrigin
     public ResponseEntity<User> login(@RequestBody User u){
         User userFromDb = null;
         HttpStatus status = null;
@@ -44,10 +46,14 @@ public class HomeController {
             userFromDb = userRepo.exists(u.getEmail(), u.getPassword());
             if(userFromDb != null){
                 if(userRepo.hasNotAnswered(u.getEmail(), u.getPassword())){
-
+                    //MOSTRAR LAS PREGUNTAS
+                } else {
+                    // MOSTRAR ERROR -> CUESTIONARIO YA RESPONDIDO
+                    status = HttpStatus.FORBIDDEN;
                 }
             } else {
-
+                // REGISTRAR USUARIO
+                // MOSTRAR PREGUNTAS
             }
             status = HttpStatus.OK;
         } catch (Exception e){
@@ -57,7 +63,8 @@ public class HomeController {
 
     }
 
-    @GetMapping("/getQuestions")
+    @GetMapping("/questions")
+    @CrossOrigin
     public ResponseEntity<List<Question>> getAllQuestions(){
         HttpStatus status = null;
         List<Question> questions = null;
