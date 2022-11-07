@@ -1,4 +1,4 @@
-package controllers;
+package com.solera.blockchain.controllers;
 
 
 import com.solera.blockchain.models.Question;
@@ -57,7 +57,7 @@ public class HomeController {
 
     }
 
-    @GetMapping("/getQuestions")
+    @GetMapping("/questions")
     public ResponseEntity<List<Question>> getAllQuestions(){
         HttpStatus status = null;
         List<Question> questions = null;
@@ -67,7 +67,7 @@ public class HomeController {
         } catch ( Exception e){
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-        return new ResponseEntity<>(questions, status);
+        return new ResponseEntity<List<Question>>(questions, status);
     }
 
 

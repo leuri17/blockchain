@@ -7,11 +7,11 @@ import 'rsuite/dist/rsuite.min.css'
 import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <BrowserRouter>
-      {/* <CustomProvider theme='dark'> */}
-        <App />
-      {/* </CustomProvider> */}
-    </BrowserRouter>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <BrowserRouter>
+    {/* <CustomProvider theme='dark'> */}
+    <App />
+    {/* </CustomProvider> */}
+  </BrowserRouter>
+  // </React.StrictMode>
 )
