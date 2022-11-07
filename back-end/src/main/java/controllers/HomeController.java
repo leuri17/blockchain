@@ -1,6 +1,7 @@
 package controllers;
 
 
+import com.solera.blockchain.models.Question;
 import com.solera.blockchain.models.User;
 import com.solera.blockchain.repositories.AnswerQuestionUserRepo;
 import com.solera.blockchain.repositories.AnswerRepo;
@@ -10,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.function.EntityResponse;
+
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -37,12 +41,33 @@ public class HomeController {
         HttpStatus status = null;
 
         try{
-            userFromDb = userRepo.isLoggedIn(u.getEmail(), u.getPassword());
+            userFromDb = userRepo.exists(u.getEmail(), u.getPassword());
+            if(userFromDb != null){
+                if(userRepo.hasNotAnswered(u.getEmail(), u.getPassword())){
+
+                }
+            } else {
+
+            }
+            status = HttpStatus.OK;
         } catch (Exception e){
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<>(userFromDb, status);
 
+    }
+
+    @GetMapping("/getQuestions")
+    public ResponseEntity<List<Question>> getAllQuestions(){
+        HttpStatus status = null;
+        List<Question> questions = null;
+        try{
+            questions = questionRepo.findAll();
+            status = HttpStatus.OK;
+        } catch ( Exception e){
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(questions, status);
     }
 
 
