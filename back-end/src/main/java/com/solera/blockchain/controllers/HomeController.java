@@ -1,6 +1,7 @@
 package com.solera.blockchain.controllers;
 
 
+import com.solera.blockchain.models.AnswerUser;
 import com.solera.blockchain.models.Question;
 import com.solera.blockchain.models.User;
 import com.solera.blockchain.repositories.*;
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class HomeController {
 
     @Autowired
-    AnswerRepo answerRepo;
+    AnswerUserRepo answerUserRepo;
 
     @Autowired
     QuestionRepo questionRepo;
@@ -40,7 +41,7 @@ public class HomeController {
         String message = "Something went wrong";
 
         try {
-            Optional<User> user = userRepo.existsEmail(u.getEmail());
+            Optional<User> user = userRepo.existsEmail(u.getEmail()); // ??????
             User userFinal = null;
             if(user.isPresent()){
                 userFinal = user.get();
@@ -50,7 +51,7 @@ public class HomeController {
                 boolean hasNotAnsweredFinal = false;
 
                 if (hasNotAnswered.isPresent()) {
-                    hasNotAnsweredFinal = true;
+                    hasNotAnsweredFinal = hasNotAnswered.get(); // ??????
                 }
 
                 if(hasNotAnsweredFinal) {
@@ -73,6 +74,13 @@ public class HomeController {
             return new ResponseEntity<>(message, status);
         }
 
+    }
+
+    @PostMapping("/answer")
+    @CrossOrigin
+    public ResponseEntity<Object> saveAnswer(@RequestBody AnswerUser answerUser) {
+        AnswerUser savedAnswerUSer = answerUserRepo.save(answerUser);
+        return new ResponseEntity<>(savedAnswerUSer, HttpStatus.CREATED);
     }
 
     @GetMapping("/questions")
