@@ -11,7 +11,6 @@ INSERT INTO public.users (id,email,"password") VALUES
 	 ('86bf0424-e4f9-4be7-958d-8269154eb008','jkesteven9@blogtalkradio.com','$2a$06$jskmCnKbukgOiJx0jpwnHuXKuN2ePaDNrN9eTA2iG1iuHDl74hoOG');
 
 INSERT INTO public.questions (id,question) VALUES
-	 ('b12fd286-41e1-42fc-86be-ee5c8f470679','Whats your companys size?'),
 	 ('af2ba800-521a-40c8-870a-c74f343ee1e3','What''s your company''s size?'),
 	 ('13c4f257-0a7e-4d5e-94dc-d2dacfc75663','What''s your annual gross revenue?'),
 	 ('22723d32-a0f0-4c64-a07a-79d0f5d3f75c','What''s the annual volume of transactions your company produces?'),
@@ -32,3 +31,25 @@ INSERT INTO public.answers (id,question_id,answer) VALUES
 	 ('a74f04a7-103f-46f5-814a-afdd47316b66','a600edaa-e6d1-43a3-b820-a7b5635e928f','Somewhat unified'),
 	 ('e7eba66b-c1f9-4954-a9b7-1e1b1009e0f1','a600edaa-e6d1-43a3-b820-a7b5635e928f','Disagree'),
 	 ('08357770-ad44-48a0-a0cf-ea3916eb5749','a600edaa-e6d1-43a3-b820-a7b5635e928f','Completely disagree');
+INSERT INTO public.useranswer (user_id,answer_id,answer_date) VALUES
+	 ('e687035b-b9d7-421e-aa85-3fd4dc2fdb0e','7d07bb13-62bb-4e80-b02e-37b0d8eb5900','2022-11-08 12:14:20.192372+01'),
+	 ('e96bdb09-4005-418b-97fe-fafaae8678cd','94d75918-cde4-4cba-8784-67b1918ba14e','2022-11-08 12:14:20.192372+01'),
+	 ('5122b9c1-2d1e-4f48-8a1e-b358f10daade','e7eba66b-c1f9-4954-a9b7-1e1b1009e0f1','2022-11-08 12:14:20.192372+01'),
+	 ('86bf0424-e4f9-4be7-958d-8269154eb008','04a27d4e-87ac-4929-aaa9-d1b63f0e3977','2022-11-08 12:14:20.192372+01'),
+	 ('7df9098b-9960-4644-a513-1f490e0ebdbb','253d23f2-ff76-4ab1-9c12-d3cbd96f2690','2022-11-08 12:14:20.192372+01'),
+	 ('15374a83-50a2-4d45-9b73-171657edf6de','08357770-ad44-48a0-a0cf-ea3916eb5749','2022-11-08 12:14:20.192372+01'),
+	 ('e96bdb09-4005-418b-97fe-fafaae8678cd','e7eba66b-c1f9-4954-a9b7-1e1b1009e0f1','2022-11-08 12:14:20.192372+01'),
+	 ('e687035b-b9d7-421e-aa85-3fd4dc2fdb0e','e7eba66b-c1f9-4954-a9b7-1e1b1009e0f1','2022-11-08 12:14:20.192372+01'),
+	 ('551e9fde-03ac-4033-a833-7718f3ad026c','f96420c1-5968-4e61-bc08-4ec2378340d9','2022-11-08 12:14:20.192372+01'),
+	 ('5122b9c1-2d1e-4f48-8a1e-b358f10daade','26371720-f2b5-4b33-b5ff-1d90f936e0b1','2022-11-08 12:14:20.192372+01');
+INSERT INTO public.useranswer (user_id,answer_id,answer_date) VALUES
+	 ('e687035b-b9d7-421e-aa85-3fd4dc2fdb0e','f96420c1-5968-4e61-bc08-4ec2378340d9','2022-11-08 12:14:20.192372+01'),
+	 ('15374a83-50a2-4d45-9b73-171657edf6de','e7eba66b-c1f9-4954-a9b7-1e1b1009e0f1','2022-11-08 12:14:20.192372+01'),
+	 ('e687035b-b9d7-421e-aa85-3fd4dc2fdb0e','253d23f2-ff76-4ab1-9c12-d3cbd96f2690','2022-11-08 12:14:20.192372+01'),
+	 ('309762fe-235f-4528-aad5-dede82c40f5d','418a08bf-45d2-40d8-b5d6-d3133c9806bb','2022-11-08 12:14:20.192372+01'),
+	 ('5122b9c1-2d1e-4f48-8a1e-b358f10daade','7d07bb13-62bb-4e80-b02e-37b0d8eb5900','2022-11-08 12:14:20.192372+01'),
+	 ('15374a83-50a2-4d45-9b73-171657edf6de','94d75918-cde4-4cba-8784-67b1918ba14e','2022-11-08 12:14:20.192372+01'),
+	 ('5122b9c1-2d1e-4f48-8a1e-b358f10daade','147524f8-ef23-4b1f-894c-bd8be1f1e6c2','2022-11-08 12:14:20.192372+01'),
+	 ('e96bdb09-4005-418b-97fe-fafaae8678cd','a74f04a7-103f-46f5-814a-afdd47316b66','2022-11-08 12:14:20.192372+01'),
+	 ('4db6542e-be66-461a-ac0a-57eafe4f3caa','26371720-f2b5-4b33-b5ff-1d90f936e0b1','2022-11-08 12:14:20.192372+01');
+
