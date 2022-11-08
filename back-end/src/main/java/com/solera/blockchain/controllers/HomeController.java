@@ -63,17 +63,17 @@ public class HomeController {
     @GetMapping("/questions")
     @CrossOrigin
     public ResponseEntity<List<Question>> getAllQuestions() {
-        List<Question> questions = questionRepo.findAll();
+//        List<Question> questions = questionRepo.findAll();
 
-        return new ResponseEntity<>(questions, HttpStatus.OK);
-//        HttpStatus status = null;
-//        List<Question> questions = null;
-//        try{
-//            questions = questionRepo.findAll();
-//            status = HttpStatus.OK;
-//        } catch ( Exception e){
-//            status = HttpStatus.INTERNAL_SERVER_ERROR;
-//        }
-//        return new ResponseEntity<>(questions, status);
+//        return new ResponseEntity<>(questions, HttpStatus.OK);
+        HttpStatus status = null;
+        List<Question> questions = null;
+        try{
+            questions = questionRepo.findAll();
+            status = HttpStatus.OK;
+        } catch ( Exception e){
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<>(questions, status);
     }
 }
