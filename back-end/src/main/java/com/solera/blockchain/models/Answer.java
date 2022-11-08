@@ -1,9 +1,12 @@
 package com.solera.blockchain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -15,13 +18,19 @@ public class Answer {
     @Type(type = "org.hibernate.type.PostgresUUIDType")
     public UUID id;
 
-    @ManyToOne
-    @JoinColumn(name="id_question", nullable=false)
-    public Question id_question;
-
     @Column(nullable = false)
     public String answer;
 
+    @ManyToOne
+    @JoinColumn(name="question_id", nullable=false)
+    public Question question_id;
 
-
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            },
+            mappedBy = "answers")
+    @JsonIgnore
+    private Set<User> users = new HashSet<>();
 }

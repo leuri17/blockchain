@@ -3,7 +3,6 @@ package com.solera.blockchain.controllers;
 
 import com.solera.blockchain.models.Question;
 import com.solera.blockchain.models.User;
-import com.solera.blockchain.repositories.AnswerQuestionUserRepo;
 import com.solera.blockchain.repositories.AnswerRepo;
 import com.solera.blockchain.repositories.QuestionRepo;
 import com.solera.blockchain.repositories.UserRepo;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.servlet.function.EntityResponse;
 
 import java.util.List;
 
