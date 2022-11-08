@@ -27,52 +27,54 @@ public class HomeController {
     @Autowired
     UserRepo userRepo;
 
-//    @Autowired
-//    AnswerQuestionUserRepo aquRepo;
-
     public HomeController() {
     }
 
     @PostMapping("/login")
     @CrossOrigin
-    public ResponseEntity<User> login(@RequestBody User u) {
+    public ResponseEntity<Object> login(@RequestBody User u) {
         User userFromDb = null;
         HttpStatus status = null;
+        String message = "Something went wrong";
 
         try {
-            userFromDb = userRepo.exists(u.getEmail(), u.getPassword());
-            if (userFromDb != null) {
-                if (userRepo.hasNotAnswered(u.getEmail(), u.getPassword())) {
-                    //MOSTRAR LAS PREGUNTAS
+            boolean userExists = userRepo.exists(u.getEmail(), u.getPassword());
+            if (userExists) {
+                if (userRepo.hasNotAnswered(u.getEmail())) {
+                    status = HttpStatus.OK;
+                    return new ResponseEntity<>(userFromDb, status);
                 } else {
                     // MOSTRAR ERROR -> CUESTIONARIO YA RESPONDIDO
+                    message = "You can only answer the questionnaire once.";
                     status = HttpStatus.FORBIDDEN;
+                    return new ResponseEntity<>(message, status);
                 }
             } else {
-                // REGISTRAR USUARIO
-                // MOSTRAR PREGUNTAS
+                User newUser = userRepo.save(u);
+                status = HttpStatus.CREATED;
+                return new ResponseEntity<>(newUser, status);
             }
-            status = HttpStatus.OK;
         } catch (Exception e) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
+            return new ResponseEntity<>(message, status);
         }
-        return new ResponseEntity<>(userFromDb, status);
 
     }
 
     @GetMapping("/questions")
     @CrossOrigin
-    public ResponseEntity<List<Question>> getAllQuestions() {
-//        List<Question> questions = questionRepo.findAll();
+    public ResponseEntity<Object> getAllQuestions() {
 
-//        return new ResponseEntity<>(questions, HttpStatus.OK);
         HttpStatus status = null;
+        //Default error
+        String message = "Something went wrong";
         List<Question> questions = null;
         try{
             questions = questionRepo.findAll();
             status = HttpStatus.OK;
         } catch ( Exception e){
             status = HttpStatus.INTERNAL_SERVER_ERROR;
+            return new ResponseEntity<>(message, status);
         }
         return new ResponseEntity<>(questions, status);
     }

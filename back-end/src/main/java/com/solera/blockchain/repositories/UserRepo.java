@@ -13,14 +13,19 @@ import java.util.UUID;
 @Repository
 public interface UserRepo extends JpaRepository<User, UUID> {
 
-    @Query(value = "SELECT id, email, password FROM Users WHERE email = :email AND coalesce(crypt(:password, gen_salt('bf'), null)) = password ", nativeQuery = true)
-    public User exists(@Param("email") String email,
+    @Query(value = "select (password = crypt(:password,\n" +
+            " (select \"password\" \n" +
+            " from users " +
+            " where users.email = :email)" +
+            " )) as pswmatch " +
+            " from users", nativeQuery = true)
+    public boolean exists(@Param("email") String email,
                       @Param("password") String password);
 
-    @Query(value = "select exists (select * from answersquestionsusers" +
-            "inner join" +
-            " (select * from users u where u.email = :email and u.password = crypt(:password, gen_salt('bf'))) sub1" +
-            " on sub1.id = id); ", nativeQuery = true)
-    public boolean hasNotAnswered(@Param("email") String email,
-                             @Param("password") String password);
+    @Query(value = "select * from useranswer ua" +
+            "where exists" +
+            "(select email, \"password\"" +
+            "from users u" +
+            "where (u.email = :email))", nativeQuery = true)
+    public boolean hasNotAnswered(@Param("email") String email);
 }
