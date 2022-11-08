@@ -40,21 +40,29 @@ public class HomeController {
         String message = "Something went wrong";
 
         try {
-            Optional<Boolean> userExists = userRepo.existsEmail(u.getEmail());
-            boolean userExistsFinal = false;
-            if(userExists.isPresent()){
-                userExistsFinal = userExists.get();
+            Optional<User> user = userRepo.existsEmail(u.getEmail());
+            User userFinal = null;
+            if(user.isPresent()){
+                userFinal = user.get();
             }
-            if (userExistsFinal) {
-                if (userRepo.hasNotAnswered(u.getEmail())) {
+            if (userFinal != null) {
+                Optional<Boolean> hasNotAnswered = userRepo.hasNotAnswered(u.getEmail(), u.getPassword());
+                boolean hasNotAnsweredFinal = false;
+
+                if (hasNotAnswered.isPresent()) {
+                    hasNotAnsweredFinal = true;
+                }
+
+                if(hasNotAnsweredFinal) {
                     status = HttpStatus.OK;
-                    return new ResponseEntity<>(userFromDb, status);
+                    return new ResponseEntity<>(userFinal, status);
                 } else {
                     // MOSTRAR ERROR -> CUESTIONARIO YA RESPONDIDO
                     message = "You can only answer the questionnaire once.";
                     status = HttpStatus.FORBIDDEN;
                     return new ResponseEntity<>(message, status);
                 }
+
             } else {
                 User newUser = userRepo.insertUser(u.getEmail(), u.getPassword());
                 status = HttpStatus.CREATED;

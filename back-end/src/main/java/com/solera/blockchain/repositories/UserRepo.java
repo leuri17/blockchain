@@ -25,21 +25,22 @@ public interface UserRepo extends JpaRepository<User, UUID> {
     public Optional<Boolean> exists(@Param("email") String email,
                                     @Param("password") String password);
 
-    @Query(value = "select * from users u where u.email = :email ", nativeQuery = true)
-    public Optional<Boolean> existsEmail(@Param("email") String email);
+    @Query(value = "select * from users u where u.email = :email", nativeQuery = true)
+    public Optional<User> existsEmail(@Param("email") String email);
 
-    @Query(value = "select " +
-            "case " +
-            " when sub1.pswmatch = true then true" +
-            "    else false" +
-            "end " +
-            "from (select (password = crypt(:password, " +
-            "            (select \"password\"" +
-            "             from users" +
-            "             where users.email = :email) " +
-            "             )) as pswmatch" +
-            "             from users) sub1", nativeQuery = true)
-    public boolean hasNotAnswered(@Param("email") String email);
+    @Query(value = "select\n" +
+            "case\n" +
+            "\twhen sub1.pswmatch = true then true\n" +
+            "    else false\n" +
+            "end\n" +
+            "from (select (password = crypt(:password, \n" +
+            "            (select \"password\"\n" +
+            "             from users\n" +
+            "             where users.email = :email) \n" +
+            "             )) as pswmatch\n" +
+            "             from users where users.email = :email) sub1", nativeQuery = true)
+    public Optional<Boolean> hasNotAnswered(@Param("email") String email,
+                                            @Param("password") String password);
 
     @Query(value = "insert into users(email, \"password\")" +
             "values(:email, crypt(:password, gen_salt('bf')))" +
