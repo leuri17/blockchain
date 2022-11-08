@@ -3,9 +3,7 @@ package com.solera.blockchain.controllers;
 
 import com.solera.blockchain.models.Question;
 import com.solera.blockchain.models.User;
-import com.solera.blockchain.repositories.AnswerRepo;
-import com.solera.blockchain.repositories.QuestionRepo;
-import com.solera.blockchain.repositories.UserRepo;
+import com.solera.blockchain.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,21 +27,22 @@ public class HomeController {
     @Autowired
     UserRepo userRepo;
 
-    @Autowired
-    AnswerQuestionUserRepo aquRepo;
+//    @Autowired
+//    AnswerQuestionUserRepo aquRepo;
 
-    public HomeController(){}
+    public HomeController() {
+    }
 
     @PostMapping("/login")
     @CrossOrigin
-    public ResponseEntity<User> login(@RequestBody User u){
+    public ResponseEntity<User> login(@RequestBody User u) {
         User userFromDb = null;
         HttpStatus status = null;
 
-        try{
+        try {
             userFromDb = userRepo.exists(u.getEmail(), u.getPassword());
-            if(userFromDb != null){
-                if(userRepo.hasNotAnswered(u.getEmail(), u.getPassword())){
+            if (userFromDb != null) {
+                if (userRepo.hasNotAnswered(u.getEmail(), u.getPassword())) {
                     //MOSTRAR LAS PREGUNTAS
                 } else {
                     // MOSTRAR ERROR -> CUESTIONARIO YA RESPONDIDO
@@ -54,7 +53,7 @@ public class HomeController {
                 // MOSTRAR PREGUNTAS
             }
             status = HttpStatus.OK;
-        } catch (Exception e){
+        } catch (Exception e) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<>(userFromDb, status);
@@ -63,17 +62,18 @@ public class HomeController {
 
     @GetMapping("/questions")
     @CrossOrigin
-    public ResponseEntity<List<Question>> getAllQuestions(){
-        HttpStatus status = null;
-        List<Question> questions = null;
-        try{
-            questions = questionRepo.findAll();
-            status = HttpStatus.OK;
-        } catch ( Exception e){
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<>(questions, status);
+    public ResponseEntity<List<Question>> getAllQuestions() {
+        List<Question> questions = questionRepo.findAll();
+
+        return new ResponseEntity<>(questions, HttpStatus.OK);
+//        HttpStatus status = null;
+//        List<Question> questions = null;
+//        try{
+//            questions = questionRepo.findAll();
+//            status = HttpStatus.OK;
+//        } catch ( Exception e){
+//            status = HttpStatus.INTERNAL_SERVER_ERROR;
+//        }
+//        return new ResponseEntity<>(questions, status);
     }
-
-
 }

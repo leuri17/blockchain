@@ -16,14 +16,15 @@ public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "org.hibernate.type.PostgresUUIDType")
-    public UUID id;
+    private UUID id;
 
     @Column(nullable = false)
-    public String answer;
+    private String answer;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name="question_id", nullable=false)
-    public Question question_id;
+    private Question question_id;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
@@ -32,5 +33,57 @@ public class Answer {
             },
             mappedBy = "answers")
     @JsonIgnore
-    private Set<User> users = new HashSet<>();
+    private Set<User> users;
+
+    public Answer() {
+    }
+
+    public Answer(UUID id, String answer, Question question_id, Set<User> users) {
+        this.id = id;
+        this.answer = answer;
+        this.question_id = question_id;
+        this.users = users;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public Question getQuestion_id() {
+        return question_id;
+    }
+
+    public void setQuestion_id(Question question_id) {
+        this.question_id = question_id;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "id=" + id +
+                ", answer='" + answer + '\'' +
+                ", question_id=" + question_id +
+                ", users=" + users +
+                '}';
+    }
 }

@@ -1,5 +1,6 @@
 package com.solera.blockchain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -21,4 +22,46 @@ public class Question implements Serializable {
 
     @OneToMany(mappedBy = "question_id")
     private List<Answer> answers;
+
+    public Question() {
+    }
+
+    public Question(UUID id, String question, List<Answer> answers) {
+        this.id = id;
+        this.question = question;
+        this.answers = answers;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", question='" + question + '\'' +
+                ", answers=" + answers +
+                '}';
+    }
 }
