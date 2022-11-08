@@ -1,11 +1,18 @@
 package com.solera.blockchain.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @IdClass(AnswerUserId.class)
 @Table(name="useranswer")
-public class AnswerUser {
+public class AnswerUser implements Serializable  {
     @Id
     @ManyToOne
     private Answer answer_id;

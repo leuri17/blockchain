@@ -11,18 +11,18 @@ import {
 } from 'rsuite'
 import QuestionItem from './QuestionItem'
 import { useSelector } from 'react-redux'
-import { redirect } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const Questionnaire = ({ limit, questions, ...props }) => {
   const [activeQuestion, setActiveQuestion] = useState(1)
   const user = useSelector(state => state.user)
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const toaster = useToaster()
 
   useEffect(() => {
     if (user === null) {
-      redirect('/login')
+      navigate('/login')
     }
   }, [])
 
@@ -39,8 +39,9 @@ const Questionnaire = ({ limit, questions, ...props }) => {
       )
     } else {
       axios
-        .post(`http://localhost:8080/${user}/answers`, {
-          answer: checkedRadio.value
+        .post('http://localhost:8080/answer', {
+          answer_id: checkedRadio.value,
+          user_id: user
         })
         .then(res => {
           console.log(res.data)

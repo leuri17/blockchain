@@ -2,7 +2,7 @@ import axios from 'axios'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { Button, Form, Schema } from 'rsuite'
+import { Button, Form, Message, Schema, useToaster } from 'rsuite'
 import { loginUser } from '../reducers/userReducer'
 import FormInput from './FormInput'
 
@@ -11,6 +11,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const toaster = useToaster()
 
   const model = Schema.Model({
     email: Schema.Types.StringType()
@@ -29,6 +30,14 @@ const LoginForm = () => {
             navigate('/questions')
           }
         })
+        .catch(({ response }) => {
+          console.log(response)
+          toaster.push(
+            <Message type='error' showIcon>
+              {response.data}
+            </Message>
+          )
+        })
       // TODO Redirect if not answers
     }
   }
@@ -46,8 +55,9 @@ const LoginForm = () => {
       />
       <FormInput
         id='password-input'
-        label='Password'
+        label='Password (optional)'
         name='password'
+        type='password'
         value={password}
         onChange={val => {
           setPassword(val)

@@ -1,5 +1,10 @@
 package com.solera.blockchain.models;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -13,6 +18,8 @@ import java.util.UUID;
 public class User implements Serializable {
 
     @Id
+    @JsonSerialize(using = UUIDSerializer.class)
+    @JsonDeserialize(using = UUIDDeserializer.class)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "org.hibernate.type.PostgresUUIDType")
     private UUID id;
