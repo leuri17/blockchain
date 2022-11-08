@@ -33,7 +33,7 @@ public class Answer {
             },
             mappedBy = "answers")
     @JsonIgnore
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     public Answer() {
     }

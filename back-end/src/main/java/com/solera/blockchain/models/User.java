@@ -31,7 +31,7 @@ public class User implements Serializable {
     @JoinTable(name = "UserAnswer",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "answer_id")})
-    private Set<Answer> answers;
+    private Set<Answer> answers = new HashSet<>();
 
     public User() {
     }
