@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Controller
 public class HomeController {
@@ -38,8 +40,12 @@ public class HomeController {
         String message = "Something went wrong";
 
         try {
-            boolean userExists = userRepo.exists(u.getEmail(), u.getPassword());
-            if (userExists) {
+            Optional<Boolean> userExists = userRepo.existsEmail(u.getEmail());
+            boolean userExistsFinal = false;
+            if(userExists.isPresent()){
+                userExistsFinal = userExists.get();
+            }
+            if (userExistsFinal) {
                 if (userRepo.hasNotAnswered(u.getEmail())) {
                     status = HttpStatus.OK;
                     return new ResponseEntity<>(userFromDb, status);
@@ -50,7 +56,7 @@ public class HomeController {
                     return new ResponseEntity<>(message, status);
                 }
             } else {
-                User newUser = userRepo.save(u);
+                User newUser = userRepo.insertUser(u.getEmail(), u.getPassword());
                 status = HttpStatus.CREATED;
                 return new ResponseEntity<>(newUser, status);
             }
