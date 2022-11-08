@@ -1,10 +1,16 @@
+import axios from 'axios'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { Button, Form, Schema } from 'rsuite'
+import { loginUser } from '../reducers/userReducer'
 import FormInput from './FormInput'
 
 const LoginForm = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const model = Schema.Model({
     email: Schema.Types.StringType()
@@ -14,7 +20,17 @@ const LoginForm = () => {
   })
 
   const handleSubmit = (isValid, event) => {
-    console.log(isValid)
+    if (isValid) {
+      axios
+        .post('http://localhost:8080/login', { email, password })
+        .then(({ data, status }) => {
+          if (status === 200) {
+            dispatch(loginUser(data.id))
+            navigate('/questions')
+          }
+        })
+      // TODO Redirect if not answers
+    }
   }
 
   return (
