@@ -11,18 +11,18 @@ import {
 } from 'rsuite'
 import QuestionItem from './QuestionItem'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { redirect } from 'react-router-dom'
 import axios from 'axios'
 
 const Questionnaire = ({ limit, questions, ...props }) => {
   const [activeQuestion, setActiveQuestion] = useState(1)
   const user = useSelector(state => state.user)
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const toaster = useToaster()
 
   useEffect(() => {
     if (user === null) {
-      navigate('/login')
+      redirect('/login')
     }
   }, [])
 
