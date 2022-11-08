@@ -1,54 +1,54 @@
-//package com.solera.blockchain.models;
-//
-//import java.io.Serializable;
-//import java.util.Objects;
-//
-//public class AnswerUserId implements Serializable {
-//
-//    private Answer answer;
-//    private Question question;
-//
-//    public AnswerUserId(){}
-//
-//    public AnswerUserId(Answer answer, Question question) {
-//        this.answer = answer;
-//        this.question = question;
-//    }
-//
-//    public Answer getAnswer() {
-//        return answer;
-//    }
-//
-//    public Question getQuestion() {
-//        return question;
-//    }
-//
-//    public void setAnswer(Answer answer) {
-//        this.answer = answer;
-//    }
-//
-//    public void setQuestion(Question question) {
-//        this.question = question;
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "IdAnswerUser{" +
-//                "answer=" + answer +
-//                ", question=" + question +
-//                '}';
-//    }
-//
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        AnswerUserId that = (AnswerUserId) o;
-//        return answer.equals(that.answer) && question.equals(that.question);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(answer, question);
-//    }
-//}
+package com.solera.blockchain.models;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+public class AnswerUserId implements Serializable {
+
+    private Answer answer_id;
+    private User user_id;
+
+    public AnswerUserId(){}
+
+    public AnswerUserId(Answer answer, User user) {
+        this.answer_id = answer;
+        this.user_id = user;
+    }
+
+    public Answer getAnswer_id() {
+        return answer_id;
+    }
+
+    public void setAnswer_id(Answer answer_id) {
+        this.answer_id = answer_id;
+    }
+
+    public User getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(User user_id) {
+        this.user_id = user_id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AnswerUserId that = (AnswerUserId) o;
+        return answer_id.equals(that.answer_id) && user_id.equals(that.user_id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(answer_id, user_id);
+    }
+
+    @Override
+    public String toString() {
+        return "AnswerUserId{" +
+                "answer_id=" + answer_id +
+                ", user_id=" + user_id +
+                '}';
+    }
+}
