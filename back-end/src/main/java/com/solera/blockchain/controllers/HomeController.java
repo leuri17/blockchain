@@ -1,7 +1,8 @@
 package com.solera.blockchain.controllers;
 
 
-import com.solera.blockchain.models.AnswerUser;
+import com.solera.blockchain.models.Answer;
+import com.solera.blockchain.models.UserAnswer;
 import com.solera.blockchain.models.Question;
 import com.solera.blockchain.models.User;
 import com.solera.blockchain.repositories.*;
@@ -9,20 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.management.InstanceNotFoundException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class HomeController {
 
     @Autowired
-    AnswerUserRepo answerUserRepo;
+    UserAnswerRepo userAnswerRepo;
 
     @Autowired
     QuestionRepo questionRepo;
@@ -30,57 +29,67 @@ public class HomeController {
     @Autowired
     UserRepo userRepo;
 
+    @Autowired
+    AnswerRepo answerRepo;
+
     public HomeController() {
     }
 
     @PostMapping("/login")
     @CrossOrigin
-    public ResponseEntity<Object> login(@RequestBody User u) {
-        User userFromDb = null;
-        HttpStatus status = null;
-        String message = "Something went wrong";
-
+    public ResponseEntity<Object> login(@RequestBody User userReq) {
+        // Find User
+        Optional<User> userOptional = userRepo.findByEmail(userReq.getEmail());
         try {
-            Optional<User> user = userRepo.existsEmail(u.getEmail()); // ??????
-            User userFinal = null;
-            if(user.isPresent()){
-                userFinal = user.get();
-            }
-            if (userFinal != null) {
-                Optional<Boolean> hasNotAnswered = userRepo.hasNotAnswered(u.getEmail(), u.getPassword());
-                boolean hasNotAnsweredFinal = false;
+            if (userOptional.isPresent()) {
+                // If user exists
+                User user = userOptional.get();
 
-                if (hasNotAnswered.isPresent()) {
-                    hasNotAnsweredFinal = hasNotAnswered.get(); // ??????
-                }
-
-                if(hasNotAnsweredFinal) {
-                    status = HttpStatus.OK;
-                    return new ResponseEntity<>(userFinal, status);
+                if (userAnswerRepo.getUserAnswersByUserId(user.getId()).size() != 0) {
+                    // If user have answered the questionnaire
+                    return new ResponseEntity<>("This user have answered the questionnaire. You can only answer once", HttpStatus.FORBIDDEN);
                 } else {
-                    // MOSTRAR ERROR -> CUESTIONARIO YA RESPONDIDO
-                    message = "You can only answer the questionnaire once.";
-                    status = HttpStatus.FORBIDDEN;
-                    return new ResponseEntity<>(message, status);
+                    // If user have answered the questionnaire
+                    if (userRepo.userCanLogin(userReq.getEmail(), userReq.getPassword())) {
+                        // If the password is correct
+                        return new ResponseEntity<>(user, HttpStatus.OK);
+                    } else {
+                        // If the password is not correct
+                        return new ResponseEntity<>("User or password incorrect", HttpStatus.UNAUTHORIZED);
+                    }
                 }
-
             } else {
-                User newUser = userRepo.insertUser(u.getEmail(), u.getPassword());
-                status = HttpStatus.CREATED;
-                return new ResponseEntity<>(newUser, status);
+                // If user does not exist
+                User saveUser = userRepo.save(userReq.getEmail(), userReq.getPassword());
+                return new ResponseEntity<>(saveUser, HttpStatus.CREATED);
             }
         } catch (Exception e) {
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-            return new ResponseEntity<>(message, status);
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
-    @PostMapping("/answer")
+    @PostMapping("/{user_id}/answer")
     @CrossOrigin
-    public ResponseEntity<Object> saveAnswer(@RequestBody AnswerUser answerUser) {
-        AnswerUser savedAnswerUSer = answerUserRepo.save(answerUser);
-        return new ResponseEntity<>(savedAnswerUSer, HttpStatus.CREATED);
+    public ResponseEntity<Object> saveAnswer(@PathVariable String user_id, @RequestBody UUID answer_id) {
+        try {
+            // Find the user
+            Optional<User> user = userRepo.findById(UUID.fromString(user_id));
+
+            // Find the answer
+            Optional<Answer> answer = answerRepo.findById(answer_id);
+
+            // Create the AnswerUser object
+            if (user.isPresent() && answer.isPresent()) {
+                UserAnswer userAnswer = new UserAnswer(user.get(), answer.get());
+
+                UserAnswer savedAnswer = userAnswerRepo.save(userAnswer);
+                return new ResponseEntity<>(savedAnswer, HttpStatus.CREATED);
+            }
+
+            return new ResponseEntity<>(new InstanceNotFoundException("The user or de answer does not exist"), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @GetMapping("/questions")
@@ -91,10 +100,10 @@ public class HomeController {
         //Default error
         String message = "Something went wrong";
         List<Question> questions = null;
-        try{
+        try {
             questions = questionRepo.findAll();
             status = HttpStatus.OK;
-        } catch ( Exception e){
+        } catch (Exception e) {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
             return new ResponseEntity<>(message, status);
         }

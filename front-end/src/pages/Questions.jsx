@@ -17,6 +17,7 @@ const Questions = () => {
       })
       .catch(e => {})
   }, [])
+
   if (loading) {
     return <QuestionPlaceholder />
   }

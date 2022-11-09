@@ -39,12 +39,14 @@ const Questionnaire = ({ limit, questions, ...props }) => {
       )
     } else {
       axios
-        .post('http://localhost:8080/answer', {
-          answer_id: checkedRadio.value,
-          user_id: user
+        .post(`http://localhost:8080/${user}/answer`, {
+          answer_id: checkedRadio.value
         })
         .then(res => {
           console.log(res.data)
+        })
+        .catch(error => {
+          console.error(error)
         })
 
       if (activeQuestion < 4) {

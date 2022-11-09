@@ -3,14 +3,14 @@ package com.solera.blockchain.models;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class AnswerUserId implements Serializable {
+public class UserAnswerId implements Serializable {
 
     private Answer answer_id;
     private User user_id;
 
-    public AnswerUserId(){}
+    public UserAnswerId(){}
 
-    public AnswerUserId(Answer answer, User user) {
+    public UserAnswerId(Answer answer, User user) {
         this.answer_id = answer;
         this.user_id = user;
     }
@@ -35,7 +35,7 @@ public class AnswerUserId implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AnswerUserId that = (AnswerUserId) o;
+        UserAnswerId that = (UserAnswerId) o;
         return answer_id.equals(that.answer_id) && user_id.equals(that.user_id);
     }
 

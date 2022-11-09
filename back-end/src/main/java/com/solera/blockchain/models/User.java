@@ -18,8 +18,8 @@ import java.util.UUID;
 public class User implements Serializable {
 
     @Id
-    @JsonSerialize(using = UUIDSerializer.class)
-    @JsonDeserialize(using = UUIDDeserializer.class)
+//    @JsonSerialize(using = UUIDSerializer.class)
+//    @JsonDeserialize(using = UUIDDeserializer.class)
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Type(type = "org.hibernate.type.PostgresUUIDType")
     private UUID id;
