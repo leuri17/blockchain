@@ -89,8 +89,6 @@ public class Answer implements Serializable{
         return "Answer{" +
                 "id=" + id +
                 ", answer='" + answer + '\'' +
-                ", question_id=" + question_id +
-                ", users=" + users +
                 '}';
     }
 }

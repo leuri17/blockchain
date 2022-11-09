@@ -2,33 +2,34 @@ package com.solera.blockchain.models;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 public class UserAnswerId implements Serializable {
 
-    private Answer answer_id;
-    private User user_id;
+    private UUID answer;
+    private UUID user;
 
     public UserAnswerId(){}
 
-    public UserAnswerId(Answer answer, User user) {
-        this.answer_id = answer;
-        this.user_id = user;
+    public UserAnswerId(UUID answer, UUID user) {
+        this.answer = answer;
+        this.user = user;
     }
 
-    public Answer getAnswer_id() {
-        return answer_id;
+    public UUID getAnswer_id() {
+        return answer;
     }
 
-    public void setAnswer_id(Answer answer_id) {
-        this.answer_id = answer_id;
+    public void setAnswer_id(UUID answer_id) {
+        this.answer = answer_id;
     }
 
-    public User getUser_id() {
-        return user_id;
+    public UUID getUser_id() {
+        return user;
     }
 
-    public void setUser_id(User user_id) {
-        this.user_id = user_id;
+    public void setUser_id(UUID user_id) {
+        this.user = user_id;
     }
 
     @Override
@@ -36,19 +37,19 @@ public class UserAnswerId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAnswerId that = (UserAnswerId) o;
-        return answer_id.equals(that.answer_id) && user_id.equals(that.user_id);
+        return Objects.equals(answer, that.answer) && Objects.equals(user, that.user);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(answer_id, user_id);
+        return Objects.hash(answer, user);
     }
 
     @Override
     public String toString() {
-        return "AnswerUserId{" +
-                "answer_id=" + answer_id +
-                ", user_id=" + user_id +
+        return "UserAnswerId{" +
+                "answer_id=" + answer +
+                ", user_id=" + user +
                 '}';
     }
 }

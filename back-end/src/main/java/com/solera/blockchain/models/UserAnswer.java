@@ -9,41 +9,41 @@ import java.io.Serializable;
 public class UserAnswer implements Serializable  {
     @Id
     @ManyToOne
-    private User user_id;
+    private User user;
 
     @Id
     @ManyToOne
-    private Answer answer_id;
+    private Answer answer;
 
     public UserAnswer() {
     }
 
-    public UserAnswer(User user_id, Answer answer_id) {
-        this.user_id = user_id;
-        this.answer_id = answer_id;
+    public UserAnswer(User user, Answer answer) {
+        this.user = user;
+        this.answer = answer;
     }
 
     public User getUser_id() {
-        return user_id;
+        return user;
     }
 
     public void setUser_id(User user_id) {
-        this.user_id = user_id;
+        this.user = user_id;
     }
 
     public Answer getAnswer_id() {
-        return answer_id;
+        return answer;
     }
 
     public void setAnswer_id(Answer answer_id) {
-        this.answer_id = answer_id;
+        this.answer = answer_id;
     }
 
     @Override
     public String toString() {
         return "UserAnswer{" +
-                "user_id=" + user_id +
-                ", answer_id=" + answer_id +
+                "user_id=" + user +
+                ", answer_id=" + answer +
                 '}';
     }
 }

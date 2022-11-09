@@ -40,7 +40,7 @@ const Questionnaire = ({ limit, questions, ...props }) => {
     } else {
       axios
         .post(`http://localhost:8080/${user}/answer`, {
-          answer_id: checkedRadio.value
+          id: checkedRadio.value
         })
         .then(res => {
           console.log(res.data)

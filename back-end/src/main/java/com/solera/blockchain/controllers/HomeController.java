@@ -47,7 +47,7 @@ public class HomeController {
 
                 if (userAnswerRepo.getUserAnswersByUserId(user.getId()).size() != 0) {
                     // If user have answered the questionnaire
-                    return new ResponseEntity<>("This user have answered the questionnaire. You can only answer once", HttpStatus.FORBIDDEN);
+                    return new ResponseEntity<>("This user have answered the questionnaire. You can only answer once.", HttpStatus.FORBIDDEN);
                 } else {
                     // If user have answered the questionnaire
                     if (userRepo.userCanLogin(userReq.getEmail(), userReq.getPassword())) {
@@ -55,7 +55,7 @@ public class HomeController {
                         return new ResponseEntity<>(user, HttpStatus.OK);
                     } else {
                         // If the password is not correct
-                        return new ResponseEntity<>("User or password incorrect", HttpStatus.UNAUTHORIZED);
+                        return new ResponseEntity<>("The email or the password are incorrect", HttpStatus.UNAUTHORIZED);
                     }
                 }
             } else {
@@ -70,13 +70,13 @@ public class HomeController {
 
     @PostMapping("/{user_id}/answer")
     @CrossOrigin
-    public ResponseEntity<Object> saveAnswer(@PathVariable String user_id, @RequestBody UUID answer_id) {
+    public ResponseEntity<Object> saveAnswer(@PathVariable String user_id, @RequestBody Answer answerReq) {
         try {
             // Find the user
             Optional<User> user = userRepo.findById(UUID.fromString(user_id));
 
             // Find the answer
-            Optional<Answer> answer = answerRepo.findById(answer_id);
+            Optional<Answer> answer = answerRepo.findById(answerReq.getId());
 
             // Create the AnswerUser object
             if (user.isPresent() && answer.isPresent()) {
